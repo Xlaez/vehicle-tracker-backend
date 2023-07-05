@@ -1,21 +1,21 @@
 import { Module } from '@nestjs/common';
 // import { AppController } from './app.controller';
 // import { AppService } from './app.service';
-import { AuthModule } from './auth/auth.module';
-import { UserModule } from './user/user.module';
-import { VehicleModule } from './vehicle/vehicle.module';
-import { HistoryModule } from './history/history.module';
+import { AuthModule } from './features';
+import { UserModule } from './features';
+import { VehicleModule } from './features';
+import { HistoryModule } from './features';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
-import { User, UserSchema } from './user/schema';
-import { Token, TokenSchema } from './auth/schema';
-import { Vehicle, VehicleSchema } from './vehicle/schema';
-import { History, HistorySchema } from './history/schema';
+import { User, UserSchema } from './features';
+import { Token, TokenSchema } from './features';
+import { Vehicle, VehicleSchema } from './features';
+import { History, HistorySchema } from './features';
 import { APP_FILTER } from '@nestjs/core';
-import { AppErrorResponseFilter } from './exception';
-import { MailModule } from './mail/mail.module';
-import { RedisConfigModule } from './redis/redis.module';
+import { AppErrorResponseFilter } from './core';
+import { MailModule } from './shared';
+import { RedisConfigModule } from './core';
 import { RedisModule } from '@nestjs-modules/ioredis';
 
 @Module({
