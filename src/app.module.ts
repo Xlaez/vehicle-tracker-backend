@@ -17,6 +17,7 @@ import { AppErrorResponseFilter } from './core';
 import { MailModule } from './shared';
 import { RedisConfigModule } from './core';
 import { RedisModule } from '@nestjs-modules/ioredis';
+import { EventsGateway } from './core/events';
 
 @Module({
   imports: [
@@ -47,6 +48,9 @@ import { RedisModule } from '@nestjs-modules/ioredis';
     RedisConfigModule,
   ],
   // controllers: [AppController],
-  providers: [{ provide: APP_FILTER, useClass: AppErrorResponseFilter }],
+  providers: [
+    EventsGateway,
+    { provide: APP_FILTER, useClass: AppErrorResponseFilter },
+  ],
 })
 export class AppModule {}
