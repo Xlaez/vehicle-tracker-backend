@@ -39,9 +39,15 @@ export class AuthService {
   registerUser = async (dto: RegisterDto): Promise<string> => {
     try {
       if (await this.userServce.getUserByEmail(dto.email))
-        throw new BadRequestException('email in use by another user');
+        throw new AppException({
+          error: 'email in use by another user',
+          status: HttpStatus.BAD_REQUEST,
+        });
       if (await this.userServce.getUserByUsername(dto.username))
-        throw new BadRequestException('a user is already using this username');
+        throw new AppException({
+          error: 'a user is already using this username',
+          status: HttpStatus.BAD_REQUEST,
+        });
       await this.userServce.saveUser(dto);
       const verificationCode = uniqueSixDigits();
       // console.log(verificationCode);
@@ -56,7 +62,10 @@ export class AuthService {
       );
       return 'account created';
     } catch (e) {
-      throw new InternalServerErrorException(e);
+      throw new AppException({
+        error: 'an error occured',
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+      });
     }
   };
 
@@ -68,11 +77,18 @@ export class AuthService {
           { username: dto.usernameOrEmail },
         ],
       });
-      if (!user) throw new BadRequestException('incorrect login credentials');
+      if (!user)
+        throw new AppException({
+          error: 'incorrect login credentials',
+          status: HttpStatus.BAD_REQUEST,
+        });
       if (!user.isEmailVerified)
         throw new BadRequestException('verify email in order to login');
       if (!(await verify(user.password, dto.password)))
-        throw new BadRequestException('incorrect login credentials');
+        throw new AppException({
+          error: 'incorrect login credentials',
+          status: HttpStatus.BAD_REQUEST,
+        });
       const { accessDuraton, accessToken, refreshDuration, refreshToken } =
         await this.generateAuthTokens(user);
       await this.saveToken(
@@ -89,7 +105,7 @@ export class AuthService {
         user,
       };
     } catch (e) {
-      throw new InternalServerErrorException(e);
+      throw new AppException(e);
     }
   };
 
@@ -111,7 +127,7 @@ export class AuthService {
       await this.redisService.remove(verificationCode.code);
       return user.save();
     } catch (e) {
-      throw new InternalServerErrorException(e);
+      throw new AppException(e);
     }
   };
 
