@@ -163,6 +163,28 @@ export class AuthService {
     return user.save();
   };
 
+  refreshTokens = async (token: string) => {
+    try {
+      const refreshTokenDoc = await this.verifyToken(token);
+      const user = await this.userServce.getUserById(
+        refreshTokenDoc.tokenDoc.sub,
+      );
+      if (!user)
+        throw new AppException({
+          error: 'token has expired or is invalid',
+          status: HttpStatus.BAD_REQUEST,
+        });
+      await this.TokenSchema.deleteOne({ token: refreshTokenDoc.token });
+      const tokens = await this.generateAuthTokens(user);
+      return { tokens, user };
+    } catch (e) {
+      throw new AppException({
+        error: e,
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+      });
+    }
+  };
+
   /**
    * UTILITIES
    */

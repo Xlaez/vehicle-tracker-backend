@@ -37,6 +37,12 @@ export class AuthController {
   }
 
   @HttpCode(HttpStatus.OK)
+  @Post('refresh-tokens')
+  async refreshTokens(@Body() body: { token: string }): Promise<any> {
+    return this.authService.refreshTokens(body.token);
+  }
+
+  @HttpCode(HttpStatus.OK)
   @Post('login')
   async login(@Body() dto: LoginDto): Promise<any> {
     const { accessDuraton, accessToken, refreshDuration, refreshToken, user } =
