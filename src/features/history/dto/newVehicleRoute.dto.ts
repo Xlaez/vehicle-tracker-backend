@@ -14,7 +14,7 @@ export class NewVehcileRouteDto {
   longitude: number;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   speed: string;
 
   @IsString()

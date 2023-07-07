@@ -105,7 +105,10 @@ export class AuthService {
         user,
       };
     } catch (e) {
-      throw new AppException(e);
+      throw new AppException({
+        error: 'an unexpected error occured',
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+      });
     }
   };
 
