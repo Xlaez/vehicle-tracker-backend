@@ -2,11 +2,15 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, SchemaTypes } from 'mongoose';
 import { toJSON } from '../../user/schema/plugins';
 import { Vehicle } from '../../vehicle';
+import { User } from 'src/features/user';
 
 export type HistoryDocument = HydratedDocument<History>;
 
 @Schema({ timestamps: true })
 export class History {
+  @Prop({ type: SchemaTypes.ObjectId, ref: User.name, required: true })
+  ownerId: string;
+
   @Prop({ type: SchemaTypes.ObjectId, ref: Vehicle.name, required: true })
   vehicleId: string;
 

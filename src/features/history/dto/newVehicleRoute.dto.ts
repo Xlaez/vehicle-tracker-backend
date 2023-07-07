@@ -1,15 +1,15 @@
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class NewVehcileRouteDto {
   @IsString()
   @IsNotEmpty()
   vehicleId: string;
 
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
   latitude: number;
 
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
   longitude: number;
 

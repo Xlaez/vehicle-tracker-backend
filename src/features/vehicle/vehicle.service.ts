@@ -14,6 +14,13 @@ export class VehicleService {
     return this.VehicleSchema.create({ ...dto, ownerId: userId });
   };
 
+  updateVehicleStatus = async (id: string) => {
+    return this.VehicleSchema.updateOne(
+      { _id: id },
+      { $set: { status: 'online' } },
+    );
+  };
+
   getVehicleById = async (id: string) => {
     return this.VehicleSchema.findById(id);
   };

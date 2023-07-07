@@ -22,6 +22,14 @@ export class Vehicle {
     default: 'offline',
   })
   status: string;
+  @Prop({ type: String, required: false })
+  longitude: string;
+  @Prop({ type: String, required: false })
+  speed: string;
+  @Prop({ type: String, required: false })
+  latitude: string;
+  @Prop({ type: String, required: false })
+  altitude: string;
 }
 
 const VehicleSchema = SchemaFactory.createForClass(Vehicle);

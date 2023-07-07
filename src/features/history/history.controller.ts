@@ -5,11 +5,12 @@ import {
   NotFoundException,
   Param,
   Post,
+  Request,
   UseGuards,
 } from '@nestjs/common';
 import { HistoryService } from './history.service';
 import { NewVehcileRouteDto } from './dto';
-import { JwtAuthGuard } from '../../shared';
+import { IPayload, JwtAuthGuard } from '../../shared';
 
 @Controller('history')
 export class HistoryController {
@@ -17,8 +18,17 @@ export class HistoryController {
 
   @Post('new')
   @UseGuards(JwtAuthGuard)
-  async addVehicleRouteHistory(@Body() body: NewVehcileRouteDto): Promise<any> {
-    return this.historyService.addNewRouteHistory(body);
+  async addVehicleRouteHistory(
+    @Body() body: NewVehcileRouteDto,
+    @Request() req,
+  ): Promise<any> {
+    return this.historyService.addNewRouteHistory(body, req.user.sub);
+  }
+
+  @Get('vehicles/current-position')
+  @UseGuards(JwtAuthGuard)
+  async getAllUserVehiclesCurrentPosition(@Request() req): Promise<any> {
+    return this.historyService.getAllUserVehiclesCurrentPosition(req.user.sub);
   }
 
   @Get('vehicle/:vehicleId')
